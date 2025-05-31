@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import Statistics from "./components/Statistics";
+import Button from "./components/Button";
 
 function App() {
   // const [good, setGood] = useState(0);
@@ -18,27 +19,25 @@ function App() {
       <h1>Unicafe</h1>
       <h2>Dame feedback</h2>
       <div className="">
-        <button
+        <Button
           onClick={() => {
             setVotes({ ...votes, good: votes.good + 1 });
           }}
-        >
-          good
-        </button>
-        <button
+          description="good"
+        />
+        <Button
           onClick={() => {
             setVotes({ ...votes, neutral: votes.neutral + 1 });
           }}
-        >
-          neutral
-        </button>
-        <button
+          description="neutral"
+        />
+        <Button
           onClick={() => {
             setVotes({ ...votes, bad: votes.bad + 1 });
           }}
-        >
-          bad
-        </button>
+          description="bad"
+        />
+
         <Statistics votes={votes} />
       </div>
     </>
