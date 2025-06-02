@@ -17,10 +17,8 @@ const App = () => {
   const [selected, setSelected] = useState(getRandomNumber());
   const [votes, setVotes] = useState(new Array(arrayLength).fill(0));
 
-  const handleRandom = () => {
-    const rand = getRandomNumber();
-    setSelected(rand);
-  };
+  const maxVote = Math.max(...votes);
+  const maxIndex = votes.indexOf(maxVote);
 
   const handleVotes = () => {
     const copy = [...votes];
@@ -30,10 +28,29 @@ const App = () => {
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <button onClick={handleRandom}>Random Anecdote</button>
+      <h1>Random Anecdotes</h1>
+      <p>"{anecdotes[selected]}"</p>
+      <button onClick={() => setSelected(getRandomNumber())}>
+        Random Anecdote
+      </button>
+
       <button onClick={handleVotes}>Vote anecdote num: {selected + 1}</button>
       <p>Votes: {votes[selected]}</p>
+      {/* {maxVote > 0 && (
+        <>
+          <h2>Most voted with {maxVote} Votes: </h2>
+          <p>"{anecdotes[maxIndex]}"</p>
+        </>
+      )} */}
+
+      {maxVote > 0 ? (
+        <>
+          <h2>Most voted with {maxVote} Votes: </h2>
+          <p>"{anecdotes[maxIndex]}"</p>
+        </>
+      ) : (
+        <h2>No hay votos</h2>
+      )}
     </div>
   );
 };
