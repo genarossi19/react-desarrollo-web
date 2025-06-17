@@ -1,10 +1,12 @@
 import React from "react";
 
 const Total = ({ parts }) => {
-  const [part1, part2, part3] = parts;
+  //funcion reduce para sumar la cantidad de excersices (int) de parts (parts.excersices)
+  const total = parts.reduce((sum, part) => sum + part.exercises, 0);
+
   return (
     <p>
-      Number of exercises {part1.exercises + part2.exercises + part3.exercises}
+      <b>Total Number of exercises: {total}</b>
     </p>
   );
 };
