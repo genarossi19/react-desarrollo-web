@@ -1,6 +1,4 @@
-import Content from "./components/Content.jsx";
-import Header from "./components/Header.jsx";
-import Total from "./components/Total.jsx";
+import Course from "./components/Course";
 const App = () => {
   const course = {
     name: "Half Stack application development",
@@ -17,16 +15,14 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
       },
+      {
+        name: "Prueba new part",
+        exercises: 10,
+      },
     ],
   };
 
-  return (
-    <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  );
+  return <Course course={course} />;
 };
 
 export default App;
