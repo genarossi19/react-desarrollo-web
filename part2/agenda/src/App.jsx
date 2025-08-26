@@ -53,8 +53,19 @@ function App() {
       setNewPhone("");
       return;
     }
-    setPersons((prev) => [...prev, { name: newName, phone: newPhone }]);
-    toast.success("Agregado correctamente", { description: newName });
+    const newPerson = { name: newName, phone: newPhone };
+    axios
+      .post("http://localhost:3001/persons", newPerson)
+      .then((response) => {
+        console.log("Datos obtenidos", response.data);
+        setPersons((prev) => [...prev, response.data]);
+        toast.success("Agregado correctamente", { description: newName });
+      })
+      .catch((error) => {
+        toast.error("Error al agregar", {
+          description: error.response.data.error,
+        });
+      });
     setNewName("");
     setNewPhone("");
   };
