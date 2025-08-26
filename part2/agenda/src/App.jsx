@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Toaster } from "sonner";
 import { toast } from "sonner";
 
-import Form from "../components/Form";
-import PersonsList from "../components/PersonsList";
-import FilterInput from "../components/FilterInput";
-import { Filter } from "lucide-react";
+import Form from "./components/Form";
+import PersonsList from "./components/PersonsList";
+import FilterInput from "./components/FilterInput";
+import axios from "axios";
 
 function App() {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: "1234" },
-    { name: "Ada Lovelace", phone: "5678" },
-  ]);
+  const [persons, setPersons] = useState([]);
+
+  useEffect(() => {
+    console.log("useEffect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("Datos obtenidos", response.data);
+      setPersons(response.data);
+    });
+  }, []);
 
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
