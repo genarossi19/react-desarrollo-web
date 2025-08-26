@@ -2,7 +2,12 @@ import { useState } from "react";
 
 import { Toaster } from "sonner";
 import { toast } from "sonner";
-import { Phone } from "lucide-react";
+
+import Form from "../components/Form";
+import PersonsList from "../components/PersonsList";
+import FilterInput from "../components/FilterInput";
+import { Filter } from "lucide-react";
+
 function App() {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", phone: "1234" },
@@ -11,6 +16,7 @@ function App() {
 
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const [filter, setFilter] = useState("");
 
@@ -54,63 +60,34 @@ function App() {
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Lista de personas
         </h1>
-        <input
-          className="w-full mb-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
-          type="text"
-          placeholder="Ingrese un nombre para filtrar"
-          value={filter}
-          onChange={handleFilter}
+
+        <FilterInput
+          filter={filter}
+          handleFilter={handleFilter}
+          placeholder={"Ingrese un nombre para filtrar"}
         />
-        <div className="mb-8">
-          {personToShow.length === 0 ? (
-            <p className="text-gray-500 text-center">
-              No hay personas en la lista.
-            </p>
+
+        <PersonsList personToShow={personToShow} />
+        <button
+          onClick={() => setIsFormOpen(!isFormOpen)}
+          type="submit"
+          className="w-full font-semibold py-2 px-4 rounded-lg "
+        >
+          {!isFormOpen ? (
+            <p className="text-indigo-700">Agregar Contacto</p>
           ) : (
-            <ul className="space-y-4">
-              {personToShow.map((person, i) => (
-                <li
-                  key={i}
-                  className="bg-gray-50 p-4 rounded-lg flex justify-between items-center shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <span className="font-medium text-gray-700">
-                    {person.name}
-                  </span>
-                  <span className="text-gray-500 font-mono text-sm flex gap-2">
-                    <Phone className="h-4 w-4" /> {person.phone}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <p className="text-red-500">Cerrar</p>
           )}
-        </div>
-
-        <form onSubmit={addPerson} className="space-y-4">
-          <div className="flex flex-col gap-4">
-            <input
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
-              type="text"
-              placeholder="Ingrese un nombre"
-              value={newName}
-              onChange={handleNewName}
-            />
-            <input
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
-              type="text"
-              value={newPhone}
-              onChange={handleNewPhone}
-              placeholder="Ingrese un teléfono"
-            />
-          </div>
-
-          <button
-            disabled={!newName || !newPhone}
-            type="submit"
-            className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-indigo-300 transition-colors"
-          >
-            Agregar
-          </button>
-        </form>
+        </button>
+        {isFormOpen && (
+          <Form
+            newName={newName}
+            handleNewName={handleNewName}
+            newPhone={newPhone}
+            handleNewPhone={handleNewPhone}
+            addPerson={addPerson}
+          />
+        )}
       </div>
     </div>
   );
