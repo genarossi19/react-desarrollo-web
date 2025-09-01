@@ -1,9 +1,10 @@
 import React from "react";
 import { Phone } from "lucide-react";
 const PersonsList = ({ personToShow }) => {
+  console.log("personToShow desde PersonsList", personToShow);
   return (
-    <div className="mb-8">
-      {personToShow.length === 0 ? (
+    <div className="mb-8 ">
+      {personToShow.length === 0 || !personToShow ? (
         <p className="text-gray-500 text-center">
           No hay personas en la lista.
         </p>

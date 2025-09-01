@@ -8,10 +8,10 @@ const Form = ({
   addPerson,
 }) => {
   return (
-    <form onSubmit={addPerson} className="space-y-4">
-      <div className="flex gap-4 items-center">
+    <form onSubmit={addPerson} className="space-y-4  m-auto">
+      <div className="flex gap-4 items-center ">
         <UserRoundPlus className="h-4 w-4" />
-        <h2 className="text-xl font-semibold ">Agregar Contacto</h2>
+        <h2 className="text-xl font-semibold  ">Agregar Contacto</h2>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -34,7 +34,7 @@ const Form = ({
       <button
         disabled={!newName || !newPhone}
         type="submit"
-        className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-indigo-300 transition-colors"
+        className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg  hover:bg-indigo-700 disabled:bg-indigo-300 transition-colors"
       >
         Agregar
       </button>

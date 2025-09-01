@@ -6,17 +6,24 @@ import { toast } from "sonner";
 import Form from "./components/Form";
 import PersonsList from "./components/PersonsList";
 import FilterInput from "./components/FilterInput";
-import axios from "axios";
+import personService from "./services/persons.js";
 
 function App() {
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
     console.log("useEffect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("Datos obtenidos", response.data);
-      setPersons(response.data);
-    });
+    personService
+      .getPersons()
+      .then((data) => {
+        setPersons(data); // guardás los datos en el estado
+      })
+      .catch((error) => {
+        console.error("Error al obtener datos", error);
+        toast.error("Error al obtener datos", {
+          description: error.message,
+        });
+      });
   }, []);
 
   const [newName, setNewName] = useState("");
@@ -37,6 +44,8 @@ function App() {
     ? persons.filter((person) => doesMatch(person, filter))
     : persons;
 
+  console.log("personToShow desde App", personToShow);
+
   const handleNewName = () => {
     setNewName(event.target.value);
   };
@@ -44,35 +53,71 @@ function App() {
     setNewPhone(event.target.value);
   };
 
-  const addPerson = () => {
+  // ! addPerson con .then
+
+  // const addPerson = () => {
+  //   event.preventDefault();
+  //   if (persons.some((person) => person.phone === newPhone)) {
+  //     toast.error("Error al agregar", {
+  //       description: `No se puede repetir telefono ${newPhone}`,
+  //     });
+  //     setNewPhone("");
+  //     return;
+  //   }
+  //   const newPerson = { name: newName, phone: newPhone };
+  //   personService
+  //     .addPerson(newPerson)
+  //     .then((createdPerson) => {
+  //       setPersons((prev) => prev.concat(createdPerson));
+  //       toast.success(`Se ha agregado a ${createdPerson.name}`, {
+  //         description: `Telefono: ${createdPerson.phone}`,
+  //       });
+  //     })
+
+  //     .catch((error) => {
+  //       console.error("Error al obtener datos", error);
+  //       toast.error("Error al obtener datos", {
+  //         description: error.message,
+  //       });
+  //     });
+
+  //   setNewName("");
+  //   setNewPhone("");
+  // };
+
+  // ! addPerson con async await
+  const addPerson = async (event) => {
     event.preventDefault();
-    if (persons.some((person) => person.phone === newPhone)) {
+
+    if (persons.some((p) => p.phone === newPhone)) {
       toast.error("Error al agregar", {
-        description: `No se puede repetir telefono ${newPhone}`,
+        description: `No se puede repetir ${newPhone}`,
       });
       setNewPhone("");
       return;
     }
+
     const newPerson = { name: newName, phone: newPhone };
-    axios
-      .post("http://localhost:3001/persons", newPerson)
-      .then((response) => {
-        console.log("Datos obtenidos", response.data);
-        setPersons((prev) => [...prev, response.data]);
-        toast.success("Agregado correctamente", { description: newName });
-      })
-      .catch((error) => {
-        toast.error("Error al agregar", {
-          description: error.response.data.error,
-        });
+
+    try {
+      const createdPerson = await personService.postPerson(newPerson);
+      setPersons((prev) => prev.concat(createdPerson));
+      toast.success(`Se ha agregado a ${createdPerson.name}`, {
+        description: `Telefono: ${createdPerson.phone}`,
       });
+    } catch (error) {
+      console.error("Error al obtener datos", error);
+      toast.error("Error al obtener datos", { description: error.message });
+    }
+
     setNewName("");
     setNewPhone("");
   };
+
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center p-6 ">
       <Toaster richColors closeButton position="top-center" />
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full ">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
           Lista de personas
         </h1>
@@ -90,7 +135,7 @@ function App() {
           className="w-full font-semibold py-2 px-4 rounded-lg "
         >
           {!isFormOpen ? (
-            <p className="text-indigo-700">Agregar Contacto</p>
+            <p className="text-indigo-700 ">Agregar Contacto</p>
           ) : (
             <p className="text-red-500">Cerrar</p>
           )}
