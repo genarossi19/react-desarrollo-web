@@ -128,7 +128,7 @@ function App() {
           placeholder={"Ingrese un nombre para filtrar"}
         />
 
-        <PersonsList personToShow={personToShow} />
+        <PersonsList personToShow={personToShow} setPersons={setPersons} />
         <button
           onClick={() => setIsFormOpen(!isFormOpen)}
           type="submit"
