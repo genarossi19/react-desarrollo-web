@@ -17,7 +17,7 @@ const baseUrl = "http://localhost:3000/persons";
  *   }
  * ]
  */
-const getPersons = ()=> axios.get(baseUrl).then(res=> res.data)
+const getPersons = ()=> axios.get(baseUrl).then(res => res.data)
 
 // ! ADD PERSON
 
